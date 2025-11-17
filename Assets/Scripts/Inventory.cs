@@ -20,6 +20,9 @@ public class Inventory : MonoBehaviour
     // Crafting station the player is near
     [HideInInspector] public CraftingStation currentCraftingStation;
 
+    // Cooking station the player is near
+    [HideInInspector] public CookingStation currentCookingStation;
+
     void Start()
     {
         // Initialize slots (no default items)
@@ -62,7 +65,12 @@ public class Inventory : MonoBehaviour
             {
                 currentPickup.Pickup(this);
             }
-            // Otherwise, use crafting station if in range
+            // Then cook if at a cooking station
+            else if (currentCookingStation != null)
+            {
+                currentCookingStation.ToggleCookingUI();
+            }
+            // Then craft if at a crafting station
             else if (currentCraftingStation != null)
             {
                 currentCraftingStation.ToggleCraftingUI();

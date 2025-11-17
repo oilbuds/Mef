@@ -86,6 +86,10 @@ public class InventoryUI : MonoBehaviour
             {
                 interactText.text = "Press E to pick up " + inventory.currentPickup.itemName;
             }
+            else if (inventory.currentCookingStation != null)
+            {
+                interactText.text = "Press E to use " + inventory.currentCookingStation.stationName;
+            }
             else if (inventory.currentCraftingStation != null)
             {
                 interactText.text = "Press E to use " + inventory.currentCraftingStation.stationName;
@@ -105,12 +109,23 @@ public class InventoryUI : MonoBehaviour
         if (backpackPanel != null && backpackPanel.activeSelf)
             anyUIOpen = true;
 
-        // Crafting panel open?
-        if (!anyUIOpen && inventory != null && inventory.currentCraftingStation != null)
+        if (inventory != null)
         {
-            var station = inventory.currentCraftingStation;
-            if (station.craftingPanel != null && station.craftingPanel.activeSelf)
-                anyUIOpen = true;
+            // Crafting panel open?
+            if (inventory.currentCraftingStation != null)
+            {
+                var craft = inventory.currentCraftingStation;
+                if (craft.craftingPanel != null && craft.craftingPanel.activeSelf)
+                    anyUIOpen = true;
+            }
+
+            // Cooking panel open?
+            if (inventory.currentCookingStation != null)
+            {
+                var cook = inventory.currentCookingStation;
+                if (cook.cookingPanel != null && cook.cookingPanel.activeSelf)
+                    anyUIOpen = true;
+            }
         }
 
         if (anyUIOpen)
