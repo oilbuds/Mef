@@ -23,6 +23,9 @@ public class Inventory : MonoBehaviour
     // Cooking station the player is near
     [HideInInspector] public CookingStation currentCookingStation;
 
+    // Dealer station the player is near
+    [HideInInspector] public DealerStation currentDealerStation;
+
     void Start()
     {
         // Initialize slots (no default items)
@@ -75,6 +78,11 @@ public class Inventory : MonoBehaviour
             {
                 currentCraftingStation.ToggleCraftingUI();
             }
+            // Then dealer if at a dealer station
+            else if (currentDealerStation != null)
+            {
+                currentDealerStation.ToggleDealerUI();
+            }
         }
     }
 
@@ -123,6 +131,12 @@ public class Inventory : MonoBehaviour
 
     public bool HasItem(string itemName, int count)
     {
+        int total = CountItem(itemName);
+        return total >= count;
+    }
+
+    public int CountItem(string itemName)
+    {
         int total = 0;
 
         // Count in hotbar
@@ -139,7 +153,7 @@ public class Inventory : MonoBehaviour
                 total++;
         }
 
-        return total >= count;
+        return total;
     }
 
     public bool RemoveItem(string itemName, int count)

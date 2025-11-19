@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement")]
     public float speed = 6f;
     public float gravity = -9.81f;
     public float jumpHeight = 1.2f;
 
-    [Header("Mouse Look")]
     public float mouseSensitivity = 150f;
     public Transform playerCamera;
 
@@ -15,9 +13,13 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
     private float xRotation = 0f;
 
+    // NEW: reference UI manager so we know when UI is open
+    private InventoryUI ui;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        ui = FindObjectOfType<InventoryUI>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -25,11 +27,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // If UI open -> freeze all movement + look
+        if (ui != null && ui.IsUIOpen)
+        {
+            return;
+        }
+
         MovePlayer();
         LookAround();
     }
 
-    // ------------------------- MOVEMENT -------------------------
     void MovePlayer()
     {
         float x = Input.GetAxis("Horizontal");
@@ -43,26 +50,21 @@ public class PlayerMovement : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
 
-        // Jump
         if (Input.GetButtonDown("Jump") && controller.isGrounded)
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
         controller.Move(velocity * Time.deltaTime);
     }
 
-    // ------------------------- CAMERA LOOK -------------------------
     void LookAround()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        // Vertical rotation (camera only)
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-
-        // Horizontal rotation (player body)
         transform.Rotate(Vector3.up * mouseX);
     }
 }

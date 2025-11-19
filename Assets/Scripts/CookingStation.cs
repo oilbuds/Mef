@@ -80,7 +80,7 @@ public class CookingStation : MonoBehaviour
     // Called by Start Cook button
     public void StartCook()
     {
-        Inventory inventory = FindObjectOfType<Inventory>();
+        Inventory inventory = Object.FindAnyObjectByType<Inventory>();
         if (inventory == null)
         {
             Debug.LogWarning("No Inventory found in scene.");
@@ -109,7 +109,7 @@ public class CookingStation : MonoBehaviour
 
         isCooking = false;
 
-        Inventory inventory = FindObjectOfType<Inventory>();
+        Inventory inventory = Object.FindAnyObjectByType<Inventory>();
         if (inventory == null)
         {
             Debug.LogWarning("No Inventory found in scene.");

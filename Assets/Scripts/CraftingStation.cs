@@ -20,7 +20,7 @@ public class CraftingStation : MonoBehaviour
     // Called by the Craft button in the UI
     public void CraftSulfuricAcid()
     {
-        Inventory inventory = FindObjectOfType<Inventory>();
+        Inventory inventory = Object.FindAnyObjectByType<Inventory>();
         if (inventory == null)
         {
             Debug.LogWarning("No Inventory found in scene.");
@@ -29,13 +29,13 @@ public class CraftingStation : MonoBehaviour
 
         // Check if player has required ingredients
         bool hasAcid = inventory.HasItem("Acid", 1);
-        bool hasPhosphorus = inventory.HasItem("Phosphorus", 1);
+        bool hasPhosphorus = inventory.HasItem("Sulfur", 1);
 
         if (hasAcid && hasPhosphorus)
         {
             // Remove ingredients
             inventory.RemoveItem("Acid", 1);
-            inventory.RemoveItem("Phosphorus", 1);
+            inventory.RemoveItem("Sulfur", 1);
 
             // Add result
             bool added = inventory.AddItem("Sulfuric Acid");
